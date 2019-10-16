@@ -1,4 +1,4 @@
-package com.example.letsmakeathing
+package com.example.lemino
 
 import android.content.BroadcastReceiver
 import android.content.Context

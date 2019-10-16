@@ -1,4 +1,4 @@
-package com.example.letsmakeathing
+package com.example.lemino
 
 import org.junit.Test
 

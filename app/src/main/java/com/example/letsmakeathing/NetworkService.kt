@@ -1,4 +1,4 @@
-package com.example.letsmakeathing
+package com.example.lemino
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -36,11 +36,11 @@ class NetworkService : Service() {
         lastMobileTransmitted = TrafficStats.getMobileTxBytes()
         lastMobileReceived = TrafficStats.getMobileRxBytes()
 
-        Log.e("letsmakeathing", "created network service")
+        Log.e("lemino", "created network service")
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.e("letsmakeathing", "started network service")
+        Log.e("lemino", "started network service")
 
         startTimer()
 
@@ -72,10 +72,10 @@ class NetworkService : Service() {
         timerTask = object : TimerTask() {
             override fun run() {
                 if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > 0)
-                    Log.e("a thing", "Timestamp" + Calendar.getInstance().time + " difference of transmitted is:" + (TrafficStats.getMobileTxBytes() - lastMobileTransmitted).toString())
+                    Log.e("lemino", "Timestamp" + Calendar.getInstance().time + " difference of transmitted is:" + (TrafficStats.getMobileTxBytes() - lastMobileTransmitted).toString())
 
                 if (TrafficStats.getMobileRxBytes() - lastMobileReceived > 0)
-                    Log.e("a thing", "Timestamp" + Calendar.getInstance().time + " difference of received is:" + (TrafficStats.getMobileRxBytes() - lastMobileReceived).toString())
+                    Log.e("lemino", "Timestamp" + Calendar.getInstance().time + " difference of received is:" + (TrafficStats.getMobileRxBytes() - lastMobileReceived).toString())
 
                 if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > 0 || TrafficStats.getMobileRxBytes() - lastMobileReceived > 0) {
                     buildNotification()
