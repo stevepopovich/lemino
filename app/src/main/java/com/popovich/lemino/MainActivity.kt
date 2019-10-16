@@ -1,11 +1,9 @@
-package com.example.lemino
+package com.popovich.lemino
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-
-
 
 class MainActivity : AppCompatActivity() {
 

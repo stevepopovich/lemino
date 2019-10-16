@@ -1,4 +1,4 @@
-package com.example.lemino
+package com.popovich.lemino
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
