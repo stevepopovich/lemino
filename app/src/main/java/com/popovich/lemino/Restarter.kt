@@ -14,3 +14,9 @@ class Restarter : BroadcastReceiver() {
         }
     }
 }
+
+class ServiceStopper: BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        context.stopService(Intent(context, NetworkService::class.java))
+    }
+}

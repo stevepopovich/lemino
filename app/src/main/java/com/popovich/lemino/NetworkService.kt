@@ -2,6 +2,7 @@ package com.popovich.lemino
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -12,9 +13,6 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import java.util.*
-
-
-
 
 class NetworkService : Service() {
     override fun onBind(p0: Intent?): IBinder? {
@@ -98,7 +96,7 @@ class NetworkService : Service() {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(resources.getString(R.string.channel_name), name, importance).apply {
+            val channel = NotificationChannel(getString(R.string.channel_id), name, importance).apply {
                 description = descriptionText
             }
 
@@ -109,12 +107,21 @@ class NetworkService : Service() {
     }
 
     private fun buildNotification() {
-        val builder = NotificationCompat.Builder(this, resources.getString(R.string.channel_name))
+        val broadcastIntent = Intent()
+        broadcastIntent.action = "killservice"
+        broadcastIntent.setClass(this, ServiceStopper::class.java)
+
+        val killServicePendingIntent: PendingIntent =
+            PendingIntent.getBroadcast(this, 0, broadcastIntent, 0)
+
+        val builder = NotificationCompat.Builder(this, getString(R.string.channel_id))
             .setSmallIcon(R.drawable.ic_stat_onesignal_default)
             .setContentTitle("You are using data!")
             .setContentText("MITIGATE")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .addAction(R.drawable.ic_stat_onesignal_default, getString(R.string.STOP),
+                killServicePendingIntent)
 
         with(NotificationManagerCompat.from(this)) {
             notify(mainNotificationId, builder.build())
