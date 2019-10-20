@@ -52,7 +52,6 @@ class Notifications(private val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
-            .setOngoing(true)
             .addAction(R.drawable.ic_stat_onesignal_default, context.getString(R.string.STOP_LISTENING),
                 broadcasting.getKillServicePendingIntent())
 
