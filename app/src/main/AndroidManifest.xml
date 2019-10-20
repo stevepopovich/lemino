@@ -28,15 +28,6 @@
         </service>
 
         <receiver
-            android:name="Restarter"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="@strings/restart_service_action" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
             android:name="ServiceStopper"
             android:enabled="true"
             android:exported="true">

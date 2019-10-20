@@ -5,7 +5,7 @@ import android.content.Context
 import android.net.TrafficStats
 import java.util.*
 
-class MainTimer constructor(val context: Context) {
+class MainTimer constructor(private val context: Context) {
     private var timeNotificationPopped = 0L
 
     private var lastMobileReceived = 0L

@@ -8,7 +8,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-class Notifications(val context: Context) {
+class Notifications(private val context: Context) {
     private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     private val broadcasting = Broadcasting(context)
@@ -52,7 +52,7 @@ class Notifications(val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .addAction(R.drawable.ic_stat_onesignal_default, context.getString(R.string.STOP_LISTENING),
-                broadcasting.getKillServicePendingInent())
+                broadcasting.getKillServicePendingIntent())
 
         with(NotificationManagerCompat.from(context)) {
             notify(mainNotificationId, builder.build())

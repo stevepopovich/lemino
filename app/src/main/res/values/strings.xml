@@ -14,6 +14,5 @@
     <string name="main_notification_content">Just letting you know</string>
     <string name="STOP_LISTENING">STOP LISTENING</string>
 
-    <string name="restart_service_action">restartservice</string>
     <string name="kill_service_action">killservice</string>
 </resources>

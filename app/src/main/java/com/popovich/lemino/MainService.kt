@@ -8,10 +8,6 @@ const val mainNotificationId = 0
 const val serviceChannelId = 1
 
 class MainService : Service() {
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
-    }
-
     private lateinit var timer: MainTimer
     private lateinit var notifications: Notifications
     private lateinit var broadcasting: Broadcasting
@@ -22,6 +18,10 @@ class MainService : Service() {
         timer = MainTimer(applicationContext)
         notifications = Notifications(applicationContext)
         broadcasting = Broadcasting(applicationContext)
+    }
+
+    override fun onBind(p0: Intent?): IBinder? {
+        return null
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -36,8 +36,6 @@ class MainService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        broadcasting.broadcastRestartIntent()
 
         timer.stopTimerTask()
     }

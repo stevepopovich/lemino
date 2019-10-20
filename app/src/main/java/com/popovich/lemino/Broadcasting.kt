@@ -5,50 +5,19 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.widget.Toast
 
-class StoppedReason {
-    companion object {
-        var stoppedManually: Boolean = false
-    }
-}
-
-class Broadcasting(val context: Context) {
-    fun broadcastRestartIntent() {
+class Broadcasting(private val context: Context) {
+    fun getKillServicePendingIntent(): PendingIntent {
         val broadcastIntent = Intent()
-        broadcastIntent.action = "restartservice"
-        broadcastIntent.setClass(context, Restarter::class.java)
-        context.sendBroadcast(broadcastIntent)
-    }
-
-    fun getKillServicePendingInent(): PendingIntent {
-        val broadcastIntent = Intent()
-        broadcastIntent.action = "killservice"
+        broadcastIntent.action = context.getString(R.string.kill_service_action)
         broadcastIntent.setClass(context, ServiceStopper::class.java)
 
         return PendingIntent.getBroadcast(context, 0, broadcastIntent, 0)
     }
 }
 
-class Restarter : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        if (!StoppedReason.stoppedManually) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Toast.makeText(context, "Context restarting", Toast.LENGTH_SHORT).show()
-                context.startForegroundService(Intent(context, MainService::class.java))
-            } else {
-                Toast.makeText(context, "Context restarting", Toast.LENGTH_SHORT).show()
-                context.startService(Intent(context, MainService::class.java))
-            }
-        }
-    }
-}
-
 class ServiceStopper: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        StoppedReason.stoppedManually = true
-
         context.stopService(Intent(context, MainService::class.java))
 
         val notificationManager: NotificationManager =

@@ -1,5 +1,6 @@
 package com.popovich.lemino
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -10,12 +11,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        StoppedReason.stoppedManually = false
+        startMainService(this)
+    }
 
+    private fun startMainService(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            applicationContext.startForegroundService(Intent(applicationContext, MainService::class.java))
+            context.startForegroundService(Intent(context, MainService::class.java))
         } else {
-            applicationContext.startService(Intent(applicationContext, MainService::class.java))
+            context.startService(Intent(context, MainService::class.java))
         }
     }
 }
