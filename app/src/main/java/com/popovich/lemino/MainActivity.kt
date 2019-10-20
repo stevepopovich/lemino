@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -18,15 +17,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.stop_button).setOnClickListener {
-            //stop
+            //TODO stop
         }
     }
 
     private fun startMainService(context: Context) {
-        val threshold: EditText  = findViewById(R.id.threshold)
+        // val threshold: EditText  = findViewById(R.id.threshold)
 
         val serviceIntent = Intent(context, MainService::class.java)
-        serviceIntent.putExtra(context.getString(R.string.threshold_key), threshold.text.toString().toInt())
+        // serviceIntent.putExtra(context.getString(R.string.threshold_key), threshold.text.toString().toInt())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent)

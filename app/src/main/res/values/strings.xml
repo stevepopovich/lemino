@@ -17,12 +17,12 @@
     </string>
 
     <string name="foreground_notification">
-        This app uses a android foreground service which means
+        This app uses an android foreground service which means
         that there is a non-dismissable notification.
     </string>
 
     <string name="minimize_foreground_notification">
-        You can at least long press the notification and hit minimize so it is more out of the way.
+        You can long press the notification and hit minimize so it is more out of the way.
     </string>
 
     <string name="channel_name">&appname; notification channel</string>
@@ -33,7 +33,7 @@
     <string name="service_channel_description">&appname; foreground channel</string>
 
     <string name="main_notification_title">You are using data!</string>
-    <string name="main_notification_content">Just letting you know</string>
+    <string name="main_notification_content">Using %1$s MB/s of data</string>
 
     <string name="STOP_LISTENING">STOP LISTENING</string>
 

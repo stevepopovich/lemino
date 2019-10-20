@@ -6,8 +6,8 @@ import android.net.TrafficStats
 import java.util.*
 
 class MainTimer constructor(private val context: Context) {
-    private val notificationActiveTime = 500L// how long a notification will be alive
-    private val timerPeriod = 250L // Time period in ms that we check data usage
+    private val notificationActiveTime = 1100L// how long a notification will be alive
+    private val timerPeriod = 1000L // Time period in ms that we check data usage
 
     private var threshold = 0
 
@@ -21,9 +21,14 @@ class MainTimer constructor(private val context: Context) {
     private val timer: Timer = Timer()
     private val timerTask: TimerTask = object : TimerTask() {
         override fun run() {
-            if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > threshold ||
-                TrafficStats.getMobileRxBytes() - lastMobileReceived > threshold) {
-                notifications.showMainNotification()
+            val bytesTransmitted = TrafficStats.getMobileTxBytes() - lastMobileTransmitted
+            val bytesReceived = TrafficStats.getMobileRxBytes() - lastMobileReceived
+
+            if (bytesTransmitted > threshold || bytesReceived > threshold) {
+                val totalBytesUsed = (bytesReceived + bytesTransmitted).toDouble()
+                val totalMegabytesUsed = totalBytesUsed / 1000000 // MB CONVERSION
+
+                notifications.showMainNotification(totalMegabytesUsed)
 
                 timeNotificationPopped = System.currentTimeMillis()
             }
