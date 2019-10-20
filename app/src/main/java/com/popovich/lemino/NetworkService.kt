@@ -9,7 +9,6 @@ import android.content.Intent
 import android.net.TrafficStats
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import java.util.*
@@ -27,8 +26,7 @@ class NetworkService : Service() {
 
     var timeNotificationPopped = 0L
 
-    private val notificationManager: NotificationManager =
-        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private lateinit var notificationManager: NotificationManager
 
     private var timer: Timer = Timer()
     private var timerTask: TimerTask = object : TimerTask() {
@@ -49,7 +47,7 @@ class NetworkService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.e("lemino", "started network service")
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         createNotificationChannel()
 
@@ -122,7 +120,7 @@ class NetworkService : Service() {
             .setContentText(getString(R.string.main_notification_content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .addAction(R.drawable.ic_stat_onesignal_default, getString(R.string.STOP),
+            .addAction(R.drawable.ic_stat_onesignal_default, getString(R.string.STOP_LISTENING),
                 killServicePendingIntent)
 
         with(NotificationManagerCompat.from(this)) {
