@@ -8,10 +8,10 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-class LeminoNotifications(val context: Context) {
+class Notifications(val context: Context) {
     private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    private val broadcasting = LeminoBroadcasting(context)
+    private val broadcasting = Broadcasting(context)
 
     fun buildForegroundServiceNotificationAndChannel(): Notification? {
         if (Build.VERSION.SDK_INT >= 26) {

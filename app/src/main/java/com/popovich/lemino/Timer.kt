@@ -5,13 +5,13 @@ import android.content.Context
 import android.net.TrafficStats
 import java.util.*
 
-class LeminoTimer constructor(val context: Context) {
+class MainTimer constructor(val context: Context) {
     private var timeNotificationPopped = 0L
 
     private var lastMobileReceived = 0L
     private var lastMobileTransmitted = 0L // sent
 
-    private val notifications = LeminoNotifications(context)
+    private val notifications = Notifications(context)
 
     private val timer: Timer = Timer()
     private val timerTask: TimerTask = object : TimerTask() {

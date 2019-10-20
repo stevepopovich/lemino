@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.popovich.lemino">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -24,10 +22,9 @@
         </activity>
 
         <service
-            android:name=".NetworkService"
+            android:name=".MainService"
             android:exported="false"
             >
-
         </service>
 
         <receiver
@@ -47,8 +44,5 @@
                 <action android:name="@strings/kill_service_action" />
             </intent-filter>
         </receiver>
-
-
     </application>
-
 </manifest>

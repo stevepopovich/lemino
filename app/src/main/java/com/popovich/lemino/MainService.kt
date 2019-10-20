@@ -7,21 +7,21 @@ import android.os.IBinder
 const val mainNotificationId = 0
 const val serviceChannelId = 1
 
-class NetworkService : Service() {
+class MainService : Service() {
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
-    private lateinit var timer: LeminoTimer
-    private lateinit var notifications: LeminoNotifications
-    private lateinit var broadcasting: LeminoBroadcasting
+    private lateinit var timer: MainTimer
+    private lateinit var notifications: Notifications
+    private lateinit var broadcasting: Broadcasting
 
     override fun onCreate() {
         super.onCreate()
 
-        timer = LeminoTimer(applicationContext)
-        notifications = LeminoNotifications(applicationContext)
-        broadcasting = LeminoBroadcasting(applicationContext)
+        timer = MainTimer(applicationContext)
+        notifications = Notifications(applicationContext)
+        broadcasting = Broadcasting(applicationContext)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

@@ -14,7 +14,7 @@ class StoppedReason {
     }
 }
 
-class LeminoBroadcasting(val context: Context) {
+class Broadcasting(val context: Context) {
     fun broadcastRestartIntent() {
         val broadcastIntent = Intent()
         broadcastIntent.action = "restartservice"
@@ -36,10 +36,10 @@ class Restarter : BroadcastReceiver() {
         if (!StoppedReason.stoppedManually) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 Toast.makeText(context, "Context restarting", Toast.LENGTH_SHORT).show()
-                context.startForegroundService(Intent(context, NetworkService::class.java))
+                context.startForegroundService(Intent(context, MainService::class.java))
             } else {
                 Toast.makeText(context, "Context restarting", Toast.LENGTH_SHORT).show()
-                context.startService(Intent(context, NetworkService::class.java))
+                context.startService(Intent(context, MainService::class.java))
             }
         }
     }
@@ -49,7 +49,7 @@ class ServiceStopper: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         StoppedReason.stoppedManually = true
 
-        context.stopService(Intent(context, NetworkService::class.java))
+        context.stopService(Intent(context, MainService::class.java))
 
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

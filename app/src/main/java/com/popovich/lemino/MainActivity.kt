@@ -13,9 +13,9 @@ class MainActivity : AppCompatActivity() {
         StoppedReason.stoppedManually = false
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            applicationContext.startForegroundService(Intent(applicationContext, NetworkService::class.java))
+            applicationContext.startForegroundService(Intent(applicationContext, MainService::class.java))
         } else {
-            applicationContext.startService(Intent(applicationContext, NetworkService::class.java))
+            applicationContext.startService(Intent(applicationContext, MainService::class.java))
         }
     }
 }
