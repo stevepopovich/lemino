@@ -29,4 +29,6 @@
     <string name="STOP">STOP</string>
 
     <string name="kill_service_action">killservice</string>
+
+    <string name="NUMBER_ZERO">0</string>
 </resources>
