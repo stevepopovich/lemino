@@ -6,8 +6,8 @@ import android.net.TrafficStats
 import java.util.*
 
 class MainTimer constructor(private val context: Context) {
-    private val notificationActiveTime = 500 // how long a notification will be alive
-    private val timerPeriod = 250 // Time period in ms that we check data usage
+    private val notificationActiveTime = 500L// how long a notification will be alive
+    private val timerPeriod = 250L // Time period in ms that we check data usage
 
     private var timeNotificationPopped = 0L
 
