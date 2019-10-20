@@ -1,6 +1,7 @@
 package com.popovich.lemino
 
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -19,7 +20,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.stop_button).setOnClickListener {
+            applicationContext.stopService(Intent(applicationContext, MainService::class.java))
 
+            val notificationManager: NotificationManager =
+                applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            notificationManager.cancel(mainNotificationId)
         }
     }
 
