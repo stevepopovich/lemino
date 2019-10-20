@@ -35,7 +35,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="restartservice" />
+                <action android:name="@strings/restart_service_action" />
             </intent-filter>
         </receiver>
 
@@ -44,7 +44,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="killservice" />
+                <action android:name="@strings/kill_service_action" />
             </intent-filter>
         </receiver>
 

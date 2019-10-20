@@ -1,6 +1,7 @@
 package com.popovich.lemino
 
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,23 @@ import android.widget.Toast
 class StoppedReason {
     companion object {
         var stoppedManually: Boolean = false
+    }
+}
+
+class LeminoBroadcasting(val context: Context) {
+    fun broadcastRestartIntent() {
+        val broadcastIntent = Intent()
+        broadcastIntent.action = "restartservice"
+        broadcastIntent.setClass(context, Restarter::class.java)
+        context.sendBroadcast(broadcastIntent)
+    }
+
+    fun getKillServicePendingInent(): PendingIntent {
+        val broadcastIntent = Intent()
+        broadcastIntent.action = "killservice"
+        broadcastIntent.setClass(context, ServiceStopper::class.java)
+
+        return PendingIntent.getBroadcast(context, 0, broadcastIntent, 0)
     }
 }
 
