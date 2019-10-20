@@ -5,14 +5,28 @@
 
 <resources>
     <string name="app_name">&appname;</string>
+    <string name="app_description">&appname; is an app that tells you if you are using mobile data.
+        When the threshold of data being used is passed, you will be notified.
+        ]When the usage goes back down, the notification will dismiss itself.</string>
+
+    <string name="custom_threshold">You can set how much data (in bytes) that you want to be notified about.
+        The default is zero meaning that if any data is being used, you will be notified
+    </string>
+
     <string name="channel_name">&appname; notification channel</string>
     <string name="channel_description">&appname; notification channel</string>
     <string name="channel_id">MAIN NOTIFICATION ID</string>
+
     <string name="service_channel_id">SERVICE CHANNEL ID</string>
     <string name="service_channel_description">&appname; foreground channel</string>
+
     <string name="main_notification_title">You are using data!</string>
     <string name="main_notification_content">Just letting you know</string>
+
     <string name="STOP_LISTENING">STOP LISTENING</string>
+
+    <string name="START">START</string>
+    <string name="STOP">STOP</string>
 
     <string name="kill_service_action">killservice</string>
 </resources>
