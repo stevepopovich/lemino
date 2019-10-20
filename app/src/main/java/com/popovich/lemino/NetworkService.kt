@@ -14,6 +14,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import java.util.*
 
+const val mainNotificationId = 0
+const val serviceChannelId = 1
+
 class NetworkService : Service() {
     override fun onBind(p0: Intent?): IBinder? {
         return null
@@ -24,25 +27,58 @@ class NetworkService : Service() {
 
     var timeNotificationPopped = 0L
 
-    private val mainNotificationId = 0
+    private val notificationManager: NotificationManager =
+        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    override fun onCreate() {
-        super.onCreate()
+    private var timer: Timer = Timer()
+    private var timerTask: TimerTask = object : TimerTask() {
+        override fun run() {
+            if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > 0 || TrafficStats.getMobileRxBytes() - lastMobileReceived > 0) {
+                buildNotification()
+
+                timeNotificationPopped = System.currentTimeMillis()
+            }
+
+            if (System.currentTimeMillis() - timeNotificationPopped > 1000) {
+                val notificationManager: NotificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                notificationManager.cancel(mainNotificationId)
+            }
+        }
+    }
+
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        Log.e("lemino", "started network service")
 
         createNotificationChannel()
 
         lastMobileTransmitted = TrafficStats.getMobileTxBytes()
         lastMobileReceived = TrafficStats.getMobileRxBytes()
 
-        Log.e("lemino", "created network service")
-    }
-
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.e("lemino", "started network service")
+        startForegroundService()
 
         startTimer()
 
         return START_STICKY
+    }
+
+    private fun startForegroundService() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            val channel = NotificationChannel(
+                getString(R.string.service_channel_id),
+                getString(R.string.service_channel_description),
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+
+            notificationManager.createNotificationChannel(channel)
+
+            val notification = NotificationCompat.Builder(this, getString(R.string.service_channel_id))
+                .setContentTitle("")
+                .setContentText("").build()
+
+            startForeground(serviceChannelId, notification)
+        }
     }
 
     override fun onDestroy() {
@@ -55,40 +91,8 @@ class NetworkService : Service() {
         stopTimerTask()
     }
 
-    private var timer: Timer? = null
-    private var timerTask: TimerTask? = null
-
     private fun startTimer() {
-        timer = Timer()
-
-        initializeTimerTask()
-
-        timer!!.schedule(timerTask, 0, 500) //
-    }
-
-    private fun initializeTimerTask() {
-        timerTask = object : TimerTask() {
-            override fun run() {
-                if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > 0)
-                    Log.e("lemino", "Timestamp" + Calendar.getInstance().time + " difference of transmitted is:" + (TrafficStats.getMobileTxBytes() - lastMobileTransmitted).toString())
-
-                if (TrafficStats.getMobileRxBytes() - lastMobileReceived > 0)
-                    Log.e("lemino", "Timestamp" + Calendar.getInstance().time + " difference of received is:" + (TrafficStats.getMobileRxBytes() - lastMobileReceived).toString())
-
-                if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > 0 || TrafficStats.getMobileRxBytes() - lastMobileReceived > 0) {
-                    buildNotification()
-
-                    timeNotificationPopped = System.currentTimeMillis()
-                }
-
-                if (System.currentTimeMillis() - timeNotificationPopped > 1500) {
-                    val notificationManager: NotificationManager =
-                        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-                    notificationManager.cancel(mainNotificationId)
-                }
-            }
-        }
+        timer.schedule(timerTask, 0, 500)
     }
 
     private fun createNotificationChannel() {
@@ -100,8 +104,6 @@ class NetworkService : Service() {
                 description = descriptionText
             }
 
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -116,8 +118,8 @@ class NetworkService : Service() {
 
         val builder = NotificationCompat.Builder(this, getString(R.string.channel_id))
             .setSmallIcon(R.drawable.ic_stat_onesignal_default)
-            .setContentTitle("You are using data!")
-            .setContentText("MITIGATE")
+            .setContentTitle(getString(R.string.main_notification_title))
+            .setContentText(getString(R.string.main_notification_content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .addAction(R.drawable.ic_stat_onesignal_default, getString(R.string.STOP),
@@ -129,9 +131,6 @@ class NetworkService : Service() {
     }
 
     private fun stopTimerTask() {
-        if (timer != null) {
-            timer!!.cancel()
-            timer = null
-        }
+        timer.cancel()
     }
 }

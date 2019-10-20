@@ -3,5 +3,9 @@
     <string name="channel_name">CONNECT ME CHANNEL NAME</string>
     <string name="channel_description">CHANNEL DESCRIPTION</string>
     <string name="channel_id">MAIN NOTIFICATION ID</string>
+    <string name="service_channel_id">SERVICE CHANNEL ID</string>
+    <string name="service_channel_description">HUMAN READABLE CHANNEL NAME</string>
+    <string name="main_notification_title">You are using data!</string>
+    <string name="main_notification_content">Just letting you know</string>
     <string name="STOP">STOP</string>
 </resources>
