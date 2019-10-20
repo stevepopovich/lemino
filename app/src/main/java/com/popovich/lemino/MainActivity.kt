@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -11,14 +13,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        startMainService(this)
+        findViewById<Button>(R.id.start_button).setOnClickListener {
+            startMainService(applicationContext)
+        }
+
+        findViewById<Button>(R.id.stop_button).setOnClickListener {
+            //stop
+        }
     }
 
     private fun startMainService(context: Context) {
+        val threshold: EditText  = findViewById(R.id.threshold)
+
+        val serviceIntent = Intent(context, MainService::class.java)
+        serviceIntent.putExtra(context.getString(R.string.threshold_key), threshold.text.toString().toInt())
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(Intent(context, MainService::class.java))
+            context.startForegroundService(serviceIntent)
         } else {
-            context.startService(Intent(context, MainService::class.java))
+            context.startService(serviceIntent)
         }
     }
 }

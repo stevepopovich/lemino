@@ -9,6 +9,8 @@ class MainTimer constructor(private val context: Context) {
     private val notificationActiveTime = 500L// how long a notification will be alive
     private val timerPeriod = 250L // Time period in ms that we check data usage
 
+    private var threshold = 0
+
     private var timeNotificationPopped = 0L
 
     private var lastMobileReceived = 0L
@@ -19,8 +21,8 @@ class MainTimer constructor(private val context: Context) {
     private val timer: Timer = Timer()
     private val timerTask: TimerTask = object : TimerTask() {
         override fun run() {
-            if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > 0 ||
-                TrafficStats.getMobileRxBytes() - lastMobileReceived > 0) {
+            if (TrafficStats.getMobileTxBytes() - lastMobileTransmitted > threshold ||
+                TrafficStats.getMobileRxBytes() - lastMobileReceived > threshold) {
                 notifications.showMainNotification()
 
                 timeNotificationPopped = System.currentTimeMillis()
@@ -39,7 +41,9 @@ class MainTimer constructor(private val context: Context) {
         timer.cancel()
     }
 
-    fun startTimerTask() {
+    fun startTimerTask(threshold: Int) {
+        this.threshold = threshold
+
         lastMobileTransmitted = TrafficStats.getMobileTxBytes()
         lastMobileReceived = TrafficStats.getMobileRxBytes()
 
