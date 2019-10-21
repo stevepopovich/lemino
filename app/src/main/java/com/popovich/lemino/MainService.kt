@@ -27,7 +27,7 @@ class MainService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         notifications.createMainNotificationChannel()
 
-        timer.startTimerTask(intent.getIntExtra(getString(R.string.threshold_key), 0))
+        timer.startTimerTask(intent.getDoubleExtra(getString(R.string.threshold_key), defaultThreshold))
 
         startForeground(serviceChannelId, notifications.buildForegroundServiceNotificationAndChannel())
 
