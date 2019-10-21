@@ -43,6 +43,9 @@ class MainTimer constructor(private val context: Context) {
 
                 notificationManager.cancel(mainNotificationId)
             }
+
+            lastMobileTransmitted = TrafficStats.getMobileTxBytes()
+            lastMobileReceived = TrafficStats.getMobileRxBytes()
         }
     }
 
