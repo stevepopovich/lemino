@@ -7,13 +7,13 @@ import java.util.*
 
 const val megabytesToBytesConversion = 1000000
 
-const val defaultThreshold = 0.10 * megabytesToBytesConversion
+const val defaultThresholdInBytes: Double = 0 * megabytesToBytesConversion.toDouble() // this needs match the string in the view
 
 class MainTimer constructor(private val context: Context) {
     private val notificationActiveTime = 1100L// how long a notification will be alive
     private val timerPeriod = 1000L // Time period in ms that we check data usage
 
-    private var thresholdInBytes = defaultThreshold
+    private var thresholdInBytes = defaultThresholdInBytes
 
     private var timeNotificationPopped = 0L
 
