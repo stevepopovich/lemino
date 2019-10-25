@@ -8,18 +8,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
 class Notifications {
-    // private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-//    private val broadcasting = Broadcasting(context)
-//
-
     fun showNotification(context: Context,
                          channelId: Int,
                          channelName: Int,
                          notificationId: Int,
                          smallIcon: Int,
                          title: Int,
-                         content: Int,
+                         content: String,
                          action: NotificationCompat.Action?,
                          priority: Int?,
                          visibility: Int?,
@@ -30,11 +25,11 @@ class Notifications {
         val builder = NotificationCompat.Builder(context, context.getString(channelId))
             .setSmallIcon(smallIcon)
             .setContentTitle(context.getString(title))
-            .setContentText(context.getString(content))//String.format("%.2f", megaBytesUsed)))
+            .setContentText(content)
             .setPriority(priority ?: NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(visibility ?: NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(setOnlyAlertOnce ?: false)
-            .addAction(action) //R.drawable.ic_stat_onesignal_default, context.getString(R.string.STOP_LISTENING), broadcasting.getKillServicePendingIntent()
+            .addAction(action)
 
         with(NotificationManagerCompat.from(context)) {
             notify(notificationId, builder.build())
@@ -53,21 +48,12 @@ class Notifications {
             notificationManager.createNotificationChannel(channel)
         }
     }
-//
-//    fun showMainNotification(megaBytesUsed: Double) {
-//        val builder = NotificationCompat.Builder(context, context.getString(R.string.channel_id))
-//            .setSmallIcon(R.drawable.ic_stat_onesignal_default)
-//            .setContentTitle(context.getString(R.string.main_notification_title))
-//            .setContentText(context.getString(R.string.main_notification_content, String.format("%.2f", megaBytesUsed)))
-//            .setPriority(NotificationCompat.PRIORITY_MAX)
-//            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//            .setOnlyAlertOnce(true)
-//            .addAction(R.drawable.ic_stat_onesignal_default, context.getString(R.string.STOP_LISTENING),
-//                broadcasting.getKillServicePendingIntent())
-//
-//        with(NotificationManagerCompat.from(context)) {
-//            notify(mainNotificationId, builder.build())
-//        }
-//    }
+
+    fun cancelNotification(context: Context, channelId: Int) {
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        notificationManager.cancel(channelId)
+    }
 }
 
