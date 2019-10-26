@@ -27,7 +27,6 @@
     </string>
 
     <string name="channel_name">&appname; notification channel</string>
-    <string name="channel_description">&appname; notification channel</string>
     <string name="channel_id">MAIN NOTIFICATION ID</string>
 
     <string name="service_channel_id">SERVICE CHANNEL ID</string>
