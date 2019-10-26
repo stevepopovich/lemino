@@ -2,6 +2,7 @@ package com.popovich.lemino
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -17,6 +18,7 @@ class Notifications {
                          title: String,
                          content: String,
                          action: NotificationCompat.Action?,
+                         onClick: PendingIntent,
                          priority: Int?,
                          visibility: Int?,
                          setOnlyAlertOnce: Boolean?) {
@@ -30,6 +32,7 @@ class Notifications {
             .setPriority(priority ?: NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(visibility ?: NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(setOnlyAlertOnce ?: false)
+            .setContentIntent(onClick)
             .addAction(action)
 
         with(NotificationManagerCompat.from(context)) {

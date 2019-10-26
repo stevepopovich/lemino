@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import java.util.*
 
 private const val timerPeriod = 1000L //
-private const val notificationActiveTime = timerPeriod + 100L // how long a notification will be alive, needs to be greater than timer period
+private const val notificationActiveTime = timerPeriod + 500L // how long a notification will be alive, needs to be greater than timer period
 
 class Business {
     private val notifications = Notifications()
@@ -93,6 +93,12 @@ class MainContextTimerTask(private val context: Context, private val thresholdIn
     private var lastMobileReceived = TrafficStats.getMobileRxBytes()
     private var lastMobileTransmitted = TrafficStats.getMobileTxBytes() // sent
 
+    private val mainActivityIntent = Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+
+    private val mainActivityPendingIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0)
+
     override fun run() {
         val bytesTransmitted = TrafficStats.getMobileTxBytes() - lastMobileTransmitted
         val bytesReceived = TrafficStats.getMobileRxBytes() - lastMobileReceived
@@ -111,8 +117,9 @@ class MainContextTimerTask(private val context: Context, private val thresholdIn
                 context.getString(R.string.main_notification_title),
                 context.getString(R.string.main_notification_content, String.format("%.2f", totalMegabytesUsed)),
                 NotificationCompat.Action(R.drawable.ic_stat_onesignal_default,
-                    context.getString(R.string.kill_service_action),
+                    context.getString(R.string.STOP_LISTENING),
                     business.getKillServicePendingIntent(context)),
+                mainActivityPendingIntent,
                 NotificationCompat.PRIORITY_MIN,
                 NotificationCompat.VISIBILITY_PUBLIC,
                 true
