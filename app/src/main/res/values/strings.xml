@@ -49,4 +49,8 @@
     <string name="foreground_notification_description">
         Image of the foreground notification created by running this application
     </string>
+
+    <string name="mbs_per_second_hint">
+        Threshold in MB/s
+    </string>
 </resources>

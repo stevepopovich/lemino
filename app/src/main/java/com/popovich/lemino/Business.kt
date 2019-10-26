@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import java.util.*
 
 private const val timerPeriod = 1000L //
-private const val notificationActiveTime = timerPeriod + 1000L // how long a notification will be alive, needs to be greater than timer period
+private const val notificationActiveTime = timerPeriod + 2000L // how long a notification will be alive, needs to be greater than timer period
 
 class Business {
     private val notifications = Notifications()
@@ -25,10 +25,12 @@ class Business {
     fun startMainService(context: Context, mainActivity: MainActivity) {
         val threshold: EditText = mainActivity.findViewById(R.id.threshold)
 
-        val serviceIntent = Intent(context, MainService::class.java)
-        serviceIntent.putExtra(context.getString(R.string.threshold_in_mb_key), threshold.text.toString().toDouble())
+        if (threshold.text != null && threshold.text.toString().toDoubleOrNull() != null) {
+            val serviceIntent = Intent(context, MainService::class.java)
+            serviceIntent.putExtra(context.getString(R.string.threshold_in_mb_key), threshold.text.toString().toDouble())
 
-        startServiceAppropriately(context, serviceIntent)
+            startServiceAppropriately(context, serviceIntent)
+        }
     }
 
     fun stopMainServiceAndCancelNotification(context: Context) {
