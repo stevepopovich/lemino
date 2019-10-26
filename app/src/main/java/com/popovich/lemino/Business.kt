@@ -40,11 +40,11 @@ class Business {
     }
 
     fun buildForegroundServiceNotificationAndChannel(context: Context): Notification? {
+        var importance = 0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, NotificationManager.IMPORTANCE_DEFAULT)
-        else
-            notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, 0)
+            importance = NotificationManager.IMPORTANCE_LOW
 
+        notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, importance)
 
         return NotificationCompat.Builder(context, context.getString(R.string.service_channel_id))
             .setContentTitle("")
