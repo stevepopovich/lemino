@@ -45,4 +45,8 @@
     <string name="START_THRESHOLD">0.05</string>
 
     <string name="threshold_in_mb_key">threshold_in_mb</string>
+
+    <string name="foreground_notification_description">
+        Image of the foreground notification created by running this application
+    </string>
 </resources>
