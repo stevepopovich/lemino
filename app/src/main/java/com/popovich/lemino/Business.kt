@@ -38,7 +38,11 @@ class Business {
     }
 
     fun buildForegroundServiceNotificationAndChannel(context: Context): Notification? {
-        notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, NotificationManager.IMPORTANCE_DEFAULT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, NotificationManager.IMPORTANCE_DEFAULT)
+        else
+            notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, 0)
+
 
         return NotificationCompat.Builder(context, context.getString(R.string.service_channel_id))
             .setContentTitle("")
@@ -107,11 +111,16 @@ class MainContextTimerTask(private val context: Context, private val thresholdIn
             val totalBytesUsed = (bytesReceived + bytesTransmitted).toDouble()
             val totalMegabytesUsed = totalBytesUsed / context.resources.getInteger(R.integer.megabytesToBytesConversion)
 
+            var importance = 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                importance = NotificationManager.IMPORTANCE_LOW
+            }
+
             notifications.showNotification(
                 context,
                 R.string.channel_id,
                 R.string.channel_name,
-                NotificationManager.IMPORTANCE_LOW,
+                importance,
                 context.resources.getInteger(R.integer.mainNotificationId),
                 R.drawable.ic_stat_onesignal_default,
                 context.getString(R.string.main_notification_title),
