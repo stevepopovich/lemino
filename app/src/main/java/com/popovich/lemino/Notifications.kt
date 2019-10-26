@@ -11,20 +11,21 @@ class Notifications {
     fun showNotification(context: Context,
                          channelId: Int,
                          channelName: Int,
+                         channelImportantance: Int,
                          notificationId: Int,
                          smallIcon: Int,
-                         title: Int,
+                         title: String,
                          content: String,
                          action: NotificationCompat.Action?,
                          priority: Int?,
                          visibility: Int?,
                          setOnlyAlertOnce: Boolean?) {
 
-        createNotificationChannel(context, channelId, channelName)
+        createNotificationChannel(context, channelId, channelName, channelImportantance)
 
         val builder = NotificationCompat.Builder(context, context.getString(channelId))
             .setSmallIcon(smallIcon)
-            .setContentTitle(context.getString(title))
+            .setContentTitle(title)
             .setContentText(content)
             .setPriority(priority ?: NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(visibility ?: NotificationCompat.VISIBILITY_PUBLIC)
@@ -36,11 +37,10 @@ class Notifications {
         }
     }
 
-     fun createNotificationChannel(context: Context, channelId: Int, channelName: Int) {
+     fun createNotificationChannel(context: Context, channelId: Int, channelName: Int, channelImportantance: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = context.getString(channelName)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(context.getString(channelId), name, importance)
+            val channel = NotificationChannel(context.getString(channelId), name, channelImportantance)
 
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

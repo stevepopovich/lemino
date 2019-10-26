@@ -12,22 +12,14 @@ import android.widget.EditText
 import androidx.core.app.NotificationCompat
 import java.util.*
 
-const val mainNotificationId = 0
-const val serviceChannelId = 1
-const val megabytesToBytesConversion = 1000000
-const val defaultThresholdInBytes: Double = 0 * megabytesToBytesConversion.toDouble() // this needs match the string in the view
+private const val timerPeriod = 1000L //
+private const val notificationActiveTime = timerPeriod + 100L // how long a notification will be alive
 
 class Business {
     private val notifications = Notifications()
 
     fun startMainServiceBusinessLogic(context: Context, intent: Intent) {
-        createMainNotificationChannel(context)
-
-        startTimerTask(context, intent.getDoubleExtra(context.getString(R.string.threshold_key), defaultThresholdInBytes))
-    }
-
-    fun createMainNotificationChannel(context: Context) {
-        notifications.createNotificationChannel(context, R.string.channel_id, R.string.channel_name)
+        startTimerTask(context, intent.getDoubleExtra(context.getString(R.string.threshold_key), 0.0))
     }
 
     fun startMainService(context: Context, mainActivity: MainActivity) {
@@ -36,18 +28,18 @@ class Business {
         val serviceIntent = Intent(context, MainService::class.java)
         serviceIntent.putExtra(context.getString(R.string.threshold_key), threshold.text.toString().toDouble())
 
-        startServiceAppropiately(context, serviceIntent)
+        startServiceAppropriately(context, serviceIntent)
     }
 
     fun stopMainServiceAndCancelNotification(context: Context) {
         context.stopService(Intent(context, MainService::class.java))
 
-        notifications.cancelNotification(context, mainNotificationId)
+        notifications.cancelNotification(context, R.integer.mainNotificationId)
     }
 
     fun buildForegroundServiceNotificationAndChannel(context: Context): Notification? {
         if (Build.VERSION.SDK_INT >= 26) {
-            notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description)
+            notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, NotificationManager.IMPORTANCE_DEFAULT)
 
             return NotificationCompat.Builder(context, context.getString(R.string.service_channel_id))
                 .setContentTitle("")
@@ -65,7 +57,7 @@ class Business {
         return PendingIntent.getBroadcast(context, 0, broadcastIntent, 0)
     }
 
-    private fun startServiceAppropiately(context: Context, serviceIntent: Intent) {
+    private fun startServiceAppropriately(context: Context, serviceIntent: Intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent)
         } else {
@@ -76,27 +68,25 @@ class Business {
     private val timer: Timer = Timer()
     private lateinit var timerTask: MainContextTimerTask
 
-    fun startTimerTask(context: Context, thresholdInMB: Double) {
-        timerTask = MainContextTimerTask(context, thresholdInMB * megabytesToBytesConversion)
+    private fun startTimerTask(context: Context, thresholdInMB: Double) {
+        timerTask = MainContextTimerTask(context, thresholdInMB * R.integer.megabytesToBytesConversion)
 
-        timer.schedule(timerTask, 0, 1000L)
+        timer.schedule(timerTask, 0, )
     }
 }
 
-val business = Business()
-
 class ServiceStopper: BroadcastReceiver() {
+    private val business = Business()
+
     override fun onReceive(context: Context, intent: Intent) {
         business.stopMainServiceAndCancelNotification(context)
     }
 }
 
-class MainContextTimerTask(val context: Context, val thresholdInBytes: Double) : TimerTask() {
+class MainContextTimerTask(private val context: Context, private val thresholdInBytes: Double) : TimerTask() {
     private val notifications = Notifications()
 
     private val business = Business()
-
-    private val notificationActiveTime = 1100L// how long a notification will be alive
 
     private var timeNotificationPopped = 0L
 
@@ -109,15 +99,16 @@ class MainContextTimerTask(val context: Context, val thresholdInBytes: Double) :
 
         if (bytesTransmitted > thresholdInBytes || bytesReceived > thresholdInBytes) {
             val totalBytesUsed = (bytesReceived + bytesTransmitted).toDouble()
-            val totalMegabytesUsed = totalBytesUsed / megabytesToBytesConversion
+            val totalMegabytesUsed = totalBytesUsed / R.integer.megabytesToBytesConversion
 
             notifications.showNotification(
                 context,
                 R.string.channel_id,
                 R.string.channel_name,
-                mainNotificationId,
+                NotificationManager.IMPORTANCE_LOW,
+                R.integer.mainNotificationId,
                 R.drawable.ic_stat_onesignal_default,
-                R.string.main_notification_title,
+                context.getString(R.string.main_notification_title),
                 context.getString(R.string.main_notification_content, String.format("%.2f", totalMegabytesUsed)),
                 NotificationCompat.Action(R.drawable.ic_stat_onesignal_default,
                     context.getString(R.string.kill_service_action),
@@ -131,10 +122,7 @@ class MainContextTimerTask(val context: Context, val thresholdInBytes: Double) :
         }
 
         if (System.currentTimeMillis() - timeNotificationPopped > notificationActiveTime) {
-            val notificationManager: NotificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            notificationManager.cancel(mainNotificationId)
+            notifications.cancelNotification(context, R.integer.mainNotificationId)
         }
 
         lastMobileTransmitted = TrafficStats.getMobileTxBytes()

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <integer name="mainNotificationId">0</integer>
+    <integer name="serviceChannelId">1</integer>
+    <integer name="megabytesToBytesConversion">1000000</integer>
+</resources>
