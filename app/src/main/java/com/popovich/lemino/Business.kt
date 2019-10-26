@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import java.util.*
 
 private const val timerPeriod = 1000L //
-private const val notificationActiveTime = timerPeriod + 500L // how long a notification will be alive, needs to be greater than timer period
+private const val notificationActiveTime = timerPeriod + 1000L // how long a notification will be alive, needs to be greater than timer period
 
 class Business {
     private val notifications = Notifications()
