@@ -14,7 +14,7 @@
     <string name="custom_threshold">
         You can set how much data per second (in megabytes) that you want to be notified about.
         The default is 0.1 meaning that if 0.1 MB/s is being used, you will be notified.
-        0.1 MB/s is the default as to not notify you about small uses of data
+        0.1 MB/s is the default as to not notify you about small uses of data, like SMS.
     </string>
 
     <string name="foreground_notification">
