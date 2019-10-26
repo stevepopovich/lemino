@@ -32,13 +32,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/START"
+            style="?android:attr/buttonBarButtonStyle"
             />
 
         <Button
             android:id="@+id/stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/STOP" />
+            android:text="@string/STOP"
+            style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
 
     <TextView
