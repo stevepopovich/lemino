@@ -11,7 +11,7 @@ class Notifications {
     fun showNotification(context: Context,
                          channelId: Int,
                          channelName: Int,
-                         channelImportantance: Int,
+                         channelImportance: Int,
                          notificationId: Int,
                          smallIcon: Int,
                          title: String,
@@ -21,7 +21,7 @@ class Notifications {
                          visibility: Int?,
                          setOnlyAlertOnce: Boolean?) {
 
-        createNotificationChannel(context, channelId, channelName, channelImportantance)
+        createNotificationChannel(context, channelId, channelName, channelImportance)
 
         val builder = NotificationCompat.Builder(context, context.getString(channelId))
             .setSmallIcon(smallIcon)

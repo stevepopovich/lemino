@@ -19,14 +19,14 @@ class Business {
     private val notifications = Notifications()
 
     fun startMainServiceBusinessLogic(context: Context, intent: Intent) {
-        startTimerTask(context, intent.getDoubleExtra(context.getString(R.string.threshold_key), 0.0))
+        startTimerTask(context, intent.getDoubleExtra(context.getString(R.string.threshold_in_mb_key), 0.0))
     }
 
     fun startMainService(context: Context, mainActivity: MainActivity) {
         val threshold: EditText = mainActivity.findViewById(R.id.threshold)
 
         val serviceIntent = Intent(context, MainService::class.java)
-        serviceIntent.putExtra(context.getString(R.string.threshold_key), threshold.text.toString().toDouble())
+        serviceIntent.putExtra(context.getString(R.string.threshold_in_mb_key), threshold.text.toString().toDouble())
 
         startServiceAppropriately(context, serviceIntent)
     }
@@ -34,7 +34,7 @@ class Business {
     fun stopMainServiceAndCancelNotification(context: Context) {
         context.stopService(Intent(context, MainService::class.java))
 
-        notifications.cancelNotification(context, R.integer.mainNotificationId)
+        notifications.cancelNotification(context, context.resources.getInteger(R.integer.mainNotificationId))
     }
 
     fun buildForegroundServiceNotificationAndChannel(context: Context): Notification? {
@@ -69,7 +69,7 @@ class Business {
     private lateinit var timerTask: MainContextTimerTask
 
     private fun startTimerTask(context: Context, thresholdInMB: Double) {
-        timerTask = MainContextTimerTask(context, thresholdInMB * R.integer.megabytesToBytesConversion)
+        timerTask = MainContextTimerTask(context, thresholdInMB * context.resources.getInteger(R.integer.megabytesToBytesConversion))
 
         timer.schedule(timerTask, 0, timerPeriod)
     }
@@ -99,14 +99,14 @@ class MainContextTimerTask(private val context: Context, private val thresholdIn
 
         if (bytesTransmitted > thresholdInBytes || bytesReceived > thresholdInBytes) {
             val totalBytesUsed = (bytesReceived + bytesTransmitted).toDouble()
-            val totalMegabytesUsed = totalBytesUsed / R.integer.megabytesToBytesConversion
+            val totalMegabytesUsed = totalBytesUsed / context.resources.getInteger(R.integer.megabytesToBytesConversion)
 
             notifications.showNotification(
                 context,
                 R.string.channel_id,
                 R.string.channel_name,
                 NotificationManager.IMPORTANCE_LOW,
-                R.integer.mainNotificationId,
+                context.resources.getInteger(R.integer.mainNotificationId),
                 R.drawable.ic_stat_onesignal_default,
                 context.getString(R.string.main_notification_title),
                 context.getString(R.string.main_notification_content, String.format("%.2f", totalMegabytesUsed)),
@@ -122,7 +122,7 @@ class MainContextTimerTask(private val context: Context, private val thresholdIn
         }
 
         if (System.currentTimeMillis() - timeNotificationPopped > notificationActiveTime) {
-            notifications.cancelNotification(context, R.integer.mainNotificationId)
+            notifications.cancelNotification(context, context.resources.getInteger(R.integer.mainNotificationId))
         }
 
         lastMobileTransmitted = TrafficStats.getMobileTxBytes()

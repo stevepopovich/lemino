@@ -45,5 +45,5 @@
 
     <string name="START_THRESHOLD">0.1</string>
 
-    <string name="threshold_key">threshold</string>
+    <string name="threshold_in_mb_key">threshold_in_mb</string>
 </resources>
