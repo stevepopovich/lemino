@@ -14,7 +14,7 @@ class MainService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         business.startMainServiceBusinessLogic(applicationContext, intent)
 
-        startForeground(serviceChannelId, business.buildForegroundServiceNotificationAndChannel(applicationContext))
+        startForeground(R.integer.serviceChannelId, business.buildForegroundServiceNotificationAndChannel(applicationContext))
 
         return START_STICKY
     }
