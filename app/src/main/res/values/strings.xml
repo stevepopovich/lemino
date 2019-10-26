@@ -41,7 +41,7 @@
     <string name="START">START</string>
     <string name="STOP">STOP</string>
 
-    <string name="kill_service_action">killservice</string>
+    <string name="kill_service_action">kill_service</string>
 
     <string name="START_THRESHOLD">0.05</string>
 
