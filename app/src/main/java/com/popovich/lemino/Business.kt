@@ -38,15 +38,11 @@ class Business {
     }
 
     fun buildForegroundServiceNotificationAndChannel(context: Context): Notification? {
-        if (Build.VERSION.SDK_INT >= 26) {
-            notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, NotificationManager.IMPORTANCE_DEFAULT)
+        notifications.createNotificationChannel(context, R.string.service_channel_id, R.string.service_channel_description, NotificationManager.IMPORTANCE_DEFAULT)
 
-            return NotificationCompat.Builder(context, context.getString(R.string.service_channel_id))
-                .setContentTitle("")
-                .setContentText("").build()
-        }
-
-        return null
+        return NotificationCompat.Builder(context, context.getString(R.string.service_channel_id))
+            .setContentTitle("")
+            .setContentText("").build()
     }
 
     fun getKillServicePendingIntent(context: Context): PendingIntent {
