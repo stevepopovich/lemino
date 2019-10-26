@@ -4,39 +4,18 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 
-const val mainNotificationId = 0
-const val serviceChannelId = 1
-
 class MainService : Service() {
-    private lateinit var timer: MainTimer
-    private lateinit var notifications: Notifications
-    private lateinit var broadcasting: Broadcasting
-
-    override fun onCreate() {
-        super.onCreate()
-
-        timer = MainTimer(applicationContext)
-        notifications = Notifications(applicationContext)
-        broadcasting = Broadcasting(applicationContext)
-    }
+    private val business = Business()
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        notifications.createMainNotificationChannel()
+        business.startMainServiceBusinessLogic(applicationContext, intent)
 
-        timer.startTimerTask(intent.getDoubleExtra(getString(R.string.threshold_key), defaultThresholdInBytes))
-
-        startForeground(serviceChannelId, notifications.buildForegroundServiceNotificationAndChannel())
+        startForeground(applicationContext.resources.getInteger(R.integer.serviceChannelId), business.buildForegroundServiceNotificationAndChannel(applicationContext))
 
         return START_STICKY
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        timer.stopTimerTask()
     }
 }
