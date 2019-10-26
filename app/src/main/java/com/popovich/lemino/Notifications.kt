@@ -40,10 +40,10 @@ class Notifications {
         }
     }
 
-     fun createNotificationChannel(context: Context, channelId: Int, channelName: Int, channelImportantance: Int) {
+     fun createNotificationChannel(context: Context, channelId: Int, channelName: Int, channelImportance: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = context.getString(channelName)
-            val channel = NotificationChannel(context.getString(channelId), name, channelImportantance)
+            val channel = NotificationChannel(context.getString(channelId), name, channelImportance)
 
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
