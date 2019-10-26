@@ -69,6 +69,10 @@ class Business {
 
         timer.schedule(timerTask, 0, timerPeriod)
     }
+
+    fun killMainTimerTask() {
+        timer.cancel()
+    }
 }
 
 class ServiceStopper: BroadcastReceiver() {

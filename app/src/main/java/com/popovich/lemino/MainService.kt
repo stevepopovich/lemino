@@ -18,4 +18,10 @@ class MainService : Service() {
 
         return START_STICKY
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        business.killMainTimerTask()
+    }
 }
